@@ -1,20 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>CSV Compiler</title>
-    <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+<title>Recon Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
 </head>
+
 <body>
 
-<h1>CSV Compiler</h1>
+<!-- INTRO SCREEN -->
+
+<div id="intro">
+
+<div class="logo">
+<span>R</span>
+<span>E</span>
+<span>C</span>
+<span>O</span>
+<span>N</span>
+<span> </span>
+<span>D</span>
+<span>A</span>
+<span>S</span>
+<span>H</span>
+<span>B</span>
+<span>O</span>
+<span>A</span>
+<span>R</span>
+<span>D</span>
+</div>
+
+</div>
+
+<!-- MAIN SITE -->
+
+<div id="site">
+
+<div class="dashboard">
+
+<h1>Recon Dashboard</h1>
+
+<p class="creator">Created by Divyanshu Aggarwal</p>
+
+<div class="filebox">
+
+<h3>Select CSV Files</h3>
 
 <input type="file" id="fileInput" multiple accept=".csv">
+
 <br><br>
 
 <p id="status"></p>
+
+</div>
+
+</div>
+
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="script.js"></script>
+
+<script>
+
+/* INTRO EXIT */
+
+setTimeout(()=>{
+document.getElementById("intro").classList.add("hide");
+},2500);
+
+
+/* PARTICLES */
+
+for(let i=0;i<60;i++){
+
+let p=document.createElement("div");
+p.classList.add("particle");
+
+p.style.left=Math.random()*100+"vw";
+p.style.top=Math.random()*100+"vh";
+p.style.animationDuration=(Math.random()*10+8)+"s";
+
+document.body.appendChild(p);
+
+}
+
+</script>
 
 </body>
 </html>
