@@ -183,3 +183,47 @@ color:white;
 margin-top:15px;
 opacity:.8;
 }
+/* HEADER */
+
+.header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(8px);
+border-bottom:1px solid rgba(255,255,255,0.1);
+z-index:1000;
+}
+
+/* HEADER LEFT TEXT */
+
+.header-title{
+font-family:Orbitron;
+font-size:20px;
+letter-spacing:2px;
+}
+
+/* HEADER RIGHT BUTTONS */
+
+.header-links{
+display:flex;
+gap:15px;
+}
+
+.header-links div{
+padding:8px 16px;
+border:1px solid rgba(255,255,255,0.2);
+border-radius:6px;
+background:rgba(255,255,255,0.05);
+cursor:pointer;
+transition:.3s;
+}
+
+.header-links div:hover{
+background:rgba(255,255,255,0.15);
+}
