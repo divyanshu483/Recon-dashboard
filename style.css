@@ -1,18 +1,142 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-h1 {
-    color: #333;
+/* BODY */
+
+body{
+font-family:Poppins, Arial, sans-serif;
+background:#050b1a;
+color:white;
+overflow-x:hidden;
+padding:40px;
 }
 
-button {
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
+/* ANIMATED BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+background:linear-gradient(45deg,#020617,#071133,#0a1f55,#020617);
+background-size:400% 400%;
+animation:bgmove 18s infinite linear;
+z-index:-2;
 }
 
-#columnSelector {
-    margin-top: 20px;
+@keyframes bgmove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+/* HEADINGS */
+
+h1{
+font-family:Orbitron, Poppins;
+font-size:42px;
+margin-bottom:20px;
+background:linear-gradient(90deg,#00d9ff,#60a5fa,#8b5cf6);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+/* BUTTON */
+
+button{
+padding:12px 22px;
+font-size:16px;
+cursor:pointer;
+border:none;
+border-radius:8px;
+background:#00d9ff;
+color:#020617;
+font-weight:bold;
+transition:.3s;
+}
+
+button:hover{
+background:white;
+transform:scale(1.08);
+box-shadow:0 0 15px #00d9ff;
+}
+
+/* COLUMN SELECTOR BOX */
+
+#columnSelector{
+margin-top:25px;
+padding:20px;
+background:rgba(255,255,255,.05);
+border-radius:12px;
+border:1px solid rgba(255,255,255,.1);
+backdrop-filter:blur(8px);
+}
+
+/* DASHBOARD CARD STYLE */
+
+.card{
+margin-top:25px;
+padding:25px;
+background:rgba(255,255,255,.04);
+border-radius:15px;
+border:1px solid rgba(255,255,255,.1);
+transition:.4s;
+}
+
+.card:hover{
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 0 20px #00d9ff;
+}
+
+/* INPUTS */
+
+input, select{
+padding:10px;
+border-radius:6px;
+border:none;
+outline:none;
+margin-top:8px;
+background:rgba(255,255,255,.08);
+color:white;
+}
+
+input:focus, select:focus{
+box-shadow:0 0 8px #00d9ff;
+}
+
+/* TABLE STYLE (useful for recon dashboards) */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+background:rgba(255,255,255,.03);
+border-radius:10px;
+overflow:hidden;
+}
+
+th, td{
+padding:12px;
+text-align:left;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+th{
+color:#00d9ff;
+font-family:Orbitron;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+margin-top:40px;
+opacity:.7;
 }
