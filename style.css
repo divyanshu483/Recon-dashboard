@@ -1,4 +1,28 @@
-/* NAVBA */
+/* IMPORT FONT */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+
+/* BODY */
+
+body{
+background:linear-gradient(135deg,#020617,#0a0f2e);
+color:white;
+font-family:Inter, sans-serif;
+min-height:100vh;
+}
+
+
+/* NAVBAR */
 
 nav{
 display:flex;
@@ -14,13 +38,16 @@ width:100%;
 z-index:50;
 }
 
+
 /* NAV TITLE */
 
 nav h1{
 font-family:Orbitron;
 color:#00d9ff;
 font-size:22px;
+letter-spacing:3px;
 }
+
 
 /* NAV LINKS */
 
@@ -37,13 +64,57 @@ nav a:hover{
 color:#00d9ff;
 }
 
-/* PUSH DASHBOARD DOWN BECAUSE NAVBAR IS FIXED */
+
+/* DASHBOARD */
 
 .dashboard{
-padding-top:120px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding-top:160px;
 }
 
-/* ABOUT / SUGGESTION BOX */
+
+/* MAIN TITLE */
+
+.dashboard h1{
+font-size:40px;
+margin-bottom:10px;
+font-family:Orbitron;
+}
+
+
+/* CREATOR */
+
+.creator{
+opacity:.7;
+margin-bottom:30px;
+}
+
+
+/* FILE SELECTOR */
+
+input[type="file"]{
+padding:12px 20px;
+background:#020617;
+border:1px solid rgba(255,255,255,.15);
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+
+/* STATUS */
+
+#status{
+margin-top:20px;
+opacity:.8;
+}
+
+
+/* ABOUT BOX */
 
 #aboutBox{
 display:none;
@@ -55,6 +126,7 @@ border:1px solid rgba(255,255,255,.1);
 width:350px;
 backdrop-filter:blur(8px);
 }
+
 
 /* TEXTAREA */
 
@@ -69,7 +141,8 @@ color:white;
 resize:none;
 }
 
-/* SEND BUTTON */
+
+/* BUTTON */
 
 #aboutBox button{
 margin-top:10px;
