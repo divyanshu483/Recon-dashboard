@@ -9,7 +9,7 @@ box-sizing:border-box;
 /* BODY */
 
 body{
-font-family:Poppins;
+font-family:Poppins, sans-serif;
 background:#050b1a;
 color:white;
 overflow-x:hidden;
@@ -65,11 +65,11 @@ flex-direction:column;
 z-index:999;
 }
 
-/* INTRO LOGO */
+/* LOGO TEXT */
 
 .logo{
 font-family:Orbitron;
-font-size:70px;
+font-size:80px;
 letter-spacing:6px;
 display:flex;
 flex-wrap:wrap;
@@ -81,14 +81,14 @@ display:inline-block;
 animation:bounce 1s infinite alternate;
 }
 
-/* COLORS */
+/* COLORFUL LETTERS */
 
 .logo span:nth-child(1){color:#00d9ff}
 .logo span:nth-child(2){color:#2af598}
 .logo span:nth-child(3){color:#8b5cf6}
 .logo span:nth-child(4){color:#22d3ee}
 .logo span:nth-child(5){color:#60a5fa}
-.logo span:nth-child(6){margin:0 15px}
+.logo span:nth-child(6){margin:0 20px}
 .logo span:nth-child(7){color:#22d3ee}
 .logo span:nth-child(8){color:#8b5cf6}
 .logo span:nth-child(9){color:#00d9ff}
@@ -99,7 +99,7 @@ animation:bounce 1s infinite alternate;
 .logo span:nth-child(14){color:#2af598}
 .logo span:nth-child(15){color:#00d9ff}
 
-/* BOUNCE */
+/* BOUNCE ANIMATION */
 
 @keyframes bounce{
 0%{transform:translateY(0)}
@@ -119,7 +119,7 @@ opacity:0;
 }
 }
 
-/* MAIN SITE */
+/* MAIN SITE FADE */
 
 #site{
 opacity:0;
@@ -145,51 +145,41 @@ text-align:center;
 /* TITLE */
 
 .dashboard h1{
-font-size:55px;
+font-size:60px;
 font-family:Orbitron;
 background:linear-gradient(90deg,#00d9ff,#60a5fa,#8b5cf6);
 -webkit-background-clip:text;
 color:transparent;
 }
 
-/* CREATOR */
+/* CREATOR TEXT */
 
 .creator{
 margin-top:10px;
 opacity:.7;
+font-size:16px;
 }
 
 /* FILE BOX */
 
 .filebox{
 margin-top:40px;
-padding:30px 40px;
+padding:30px 45px;
 background:rgba(255,255,255,.05);
 border-radius:12px;
 border:1px solid rgba(255,255,255,.1);
 }
 
-/* INPUT */
+/* FILE INPUT */
 
 input[type="file"]{
-margin-top:10px;
+margin-top:15px;
 color:white;
 }
 
-/* BUTTON */
+/* STATUS TEXT */
 
-button{
+#status{
 margin-top:15px;
-padding:12px 25px;
-background:#00d9ff;
-border:none;
-border-radius:8px;
-font-weight:bold;
-cursor:pointer;
-transition:.3s;
-}
-
-button:hover{
-background:white;
-transform:scale(1.1);
+opacity:.8;
 }
