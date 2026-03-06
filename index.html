@@ -9,9 +9,12 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
+
 <!-- HEADER -->
 
 <div class="header">
@@ -23,6 +26,7 @@ Reecon Dashboard
 <div class="header-links">
 <div onclick="location.href='index.html'">Home</div>
 <div onclick="location.href='about.html'">About</div>
+<div onclick="toggleTheme()">Theme</div>
 </div>
 
 </div>
@@ -61,6 +65,29 @@ Reecon Dashboard
 
 <p class="creator">Created by Divyanshu Aggarwal</p>
 
+<!-- STATS CARDS -->
+
+<div class="stats">
+
+<div class="card">
+<h3 id="filesCount">0</h3>
+<p>Files Uploaded</p>
+</div>
+
+<div class="card">
+<h3 id="rowsCount">0</h3>
+<p>Rows Processed</p>
+</div>
+
+<div class="card">
+<h3 id="errorCount">0</h3>
+<p>Errors Found</p>
+</div>
+
+</div>
+
+<!-- FILE UPLOAD -->
+
 <div class="filebox">
 
 <h3>Select CSV Files</h3>
@@ -70,6 +97,55 @@ Reecon Dashboard
 <br><br>
 
 <p id="status"></p>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="table-section">
+
+<h3>CSV Data Preview</h3>
+
+<input type="text" id="searchBox" placeholder="Search data...">
+
+<table id="dataTable">
+
+<thead></thead>
+<tbody></tbody>
+
+</table>
+
+</div>
+
+<!-- CHART -->
+
+<div class="chart-section">
+
+<h3>Data Chart</h3>
+
+<canvas id="chartCanvas"></canvas>
+
+</div>
+
+<!-- FILE HISTORY -->
+
+<div class="history">
+
+<h3>Uploaded Files</h3>
+
+<ul id="fileHistory"></ul>
+
+</div>
+
+<!-- RECON TOOLS -->
+
+<div class="tools">
+
+<h3>Recon Tools</h3>
+
+<button onclick="checkEmail()">Email Validator</button>
+
+<button onclick="generateWordlist()">Wordlist Generator</button>
 
 </div>
 
@@ -101,6 +177,72 @@ p.style.top=Math.random()*100+"vh";
 p.style.animationDuration=(Math.random()*10+8)+"s";
 
 document.body.appendChild(p);
+
+}
+
+
+/* SEARCH FILTER */
+
+document.getElementById("searchBox").addEventListener("keyup",function(){
+
+let value=this.value.toLowerCase()
+let rows=document.querySelectorAll("#dataTable tbody tr")
+
+rows.forEach(row=>{
+row.style.display=row.innerText.toLowerCase().includes(value)?"":"none"
+})
+
+})
+
+
+/* THEME TOGGLE */
+
+function toggleTheme(){
+
+if(document.body.style.background=="white"){
+document.body.style.background="#050b1a"
+document.body.style.color="white"
+}
+else{
+document.body.style.background="white"
+document.body.style.color="black"
+}
+
+}
+
+
+/* EMAIL VALIDATOR */
+
+function checkEmail(){
+
+let email=prompt("Enter email")
+
+let pattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+if(pattern.test(email))
+alert("Valid Email")
+
+else
+alert("Invalid Email")
+
+}
+
+
+/* WORDLIST GENERATOR */
+
+function generateWordlist(){
+
+let word=prompt("Enter keyword")
+
+let list=[
+word+"123",
+word+"1234",
+word+"@123",
+word+"2025",
+word+"admin"
+]
+
+alert(list.join("\n"))
 
 }
 
