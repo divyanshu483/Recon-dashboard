@@ -1,185 +1,89 @@
-/* RESET */
+/* NAVBAR */
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-/* BODY */
-
-body{
-font-family:Poppins, sans-serif;
-background:#050b1a;
-color:white;
-overflow-x:hidden;
-}
-
-/* ANIMATED BACKGROUND */
-
-body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:linear-gradient(45deg,#020617,#071133,#0a1f55,#020617);
-background-size:400% 400%;
-animation:bgmove 18s infinite linear;
-z-index:-2;
-}
-
-@keyframes bgmove{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
-}
-
-/* PARTICLES */
-
-.particle{
-position:fixed;
-width:3px;
-height:3px;
-background:#00d9ff;
-border-radius:50%;
-opacity:.5;
-animation:float 12s linear infinite;
-}
-
-@keyframes float{
-0%{transform:translateY(0)}
-100%{transform:translateY(-120vh)}
-}
-
-/* INTRO SCREEN */
-
-#intro{
-position:fixed;
-width:100%;
-height:100vh;
-background:#020617;
+nav{
 display:flex;
+justify-content:space-between;
 align-items:center;
-justify-content:center;
-flex-direction:column;
-z-index:999;
+padding:20px 10%;
+background:rgba(10,20,50,.5);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(255,255,255,.1);
+position:fixed;
+top:0;
+width:100%;
+z-index:50;
 }
 
-/* LOGO TEXT */
+/* NAV TITLE */
 
-.logo{
+nav h1{
 font-family:Orbitron;
-font-size:80px;
-letter-spacing:6px;
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
+color:#00d9ff;
+font-size:22px;
 }
 
-.logo span{
-display:inline-block;
-animation:bounce 1s infinite alternate;
+/* NAV LINKS */
+
+nav a{
+color:white;
+margin-left:25px;
+text-decoration:none;
+font-size:16px;
+transition:.3s;
+cursor:pointer;
 }
 
-/* COLORFUL LETTERS */
-
-.logo span:nth-child(1){color:#00d9ff}
-.logo span:nth-child(2){color:#2af598}
-.logo span:nth-child(3){color:#8b5cf6}
-.logo span:nth-child(4){color:#22d3ee}
-.logo span:nth-child(5){color:#60a5fa}
-.logo span:nth-child(6){margin:0 20px}
-.logo span:nth-child(7){color:#22d3ee}
-.logo span:nth-child(8){color:#8b5cf6}
-.logo span:nth-child(9){color:#00d9ff}
-.logo span:nth-child(10){color:#2af598}
-.logo span:nth-child(11){color:#60a5fa}
-.logo span:nth-child(12){color:#8b5cf6}
-.logo span:nth-child(13){color:#22d3ee}
-.logo span:nth-child(14){color:#2af598}
-.logo span:nth-child(15){color:#00d9ff}
-
-/* BOUNCE ANIMATION */
-
-@keyframes bounce{
-0%{transform:translateY(0)}
-100%{transform:translateY(-35px)}
+nav a:hover{
+color:#00d9ff;
 }
 
-/* INTRO EXIT */
-
-.hide{
-animation:open 1.5s forwards;
-}
-
-@keyframes open{
-to{
-transform:translateY(-100%);
-opacity:0;
-}
-}
-
-/* MAIN SITE FADE */
-
-#site{
-opacity:0;
-animation:fadein 2s forwards;
-animation-delay:3s;
-}
-
-@keyframes fadein{
-to{opacity:1}
-}
-
-/* DASHBOARD CENTER */
+/* PUSH DASHBOARD DOWN BECAUSE NAVBAR IS FIXED */
 
 .dashboard{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
+padding-top:120px;
 }
 
-/* TITLE */
+/* ABOUT / SUGGESTION BOX */
 
-.dashboard h1{
-font-size:60px;
-font-family:Orbitron;
-background:linear-gradient(90deg,#00d9ff,#60a5fa,#8b5cf6);
--webkit-background-clip:text;
-color:transparent;
-}
-
-/* CREATOR TEXT */
-
-.creator{
-margin-top:10px;
-opacity:.7;
-font-size:16px;
-}
-
-/* FILE BOX */
-
-.filebox{
-margin-top:40px;
-padding:30px 45px;
+#aboutBox{
+display:none;
+margin-top:30px;
+padding:30px 40px;
 background:rgba(255,255,255,.05);
 border-radius:12px;
 border:1px solid rgba(255,255,255,.1);
+width:350px;
+backdrop-filter:blur(8px);
 }
 
-/* FILE INPUT */
+/* TEXTAREA */
 
-input[type="file"]{
-margin-top:15px;
+#aboutBox textarea{
+width:100%;
+height:100px;
+background:#020617;
+border:1px solid rgba(255,255,255,.1);
+border-radius:6px;
+padding:10px;
 color:white;
+resize:none;
 }
 
-/* STATUS TEXT */
+/* SEND BUTTON */
 
-#status{
-margin-top:15px;
-opacity:.8;
+#aboutBox button{
+margin-top:10px;
+padding:10px 20px;
+background:#00d9ff;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+#aboutBox button:hover{
+background:white;
+color:#020617;
+transform:scale(1.05);
 }
