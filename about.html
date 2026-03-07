@@ -23,6 +23,18 @@ border:1px solid rgba(255,255,255,0.1);
 border-radius:12px;
 }
 
+/* INPUT FIELDS */
+
+input{
+width:100%;
+margin-top:12px;
+padding:10px;
+background:#020617;
+border:1px solid rgba(255,255,255,0.2);
+color:white;
+border-radius:8px;
+}
+
 /* SUGGESTION BOX */
 
 textarea{
@@ -93,11 +105,19 @@ automated reporting features.
 
 <p>If you have any ideas to improve this project, submit them below.</p>
 
-<textarea placeholder="Write your suggestion here..."></textarea>
+<form action="https://formspree.io/f/mvzwgprl" method="POST">
+
+<input type="text" name="name" placeholder="Your Name" required>
+
+<input type="email" name="email" placeholder="Your Email" required>
+
+<textarea name="suggestion" placeholder="Write your suggestion here..." required></textarea>
 
 <br>
 
-<button onclick="alert('Suggestion submitted!')">Submit</button>
+<button type="submit">Submit Suggestion</button>
+
+</form>
 
 </div>
 
