@@ -4,11 +4,11 @@ let filesData = [];
 const fileConfigs = [
     {
         nameMatch: "Converse Tally Cancel GST Report_",
-        columns: [1,2,3,4,5,6,7,8,11,12,17,24,25,27,29,45,47,56,61]
+        columns: [1,2,4,5,6,7,8,11,12,17,24,25,27,29,45,47,56,61]
     },
     {
         nameMatch: "Tally Return GST Report_",
-        columns: [0,1,3,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
+        columns: [0,1,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
     }
 ];
 
