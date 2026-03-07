@@ -55,12 +55,14 @@ function handleFiles(event) {
         compileCSV();
     });
 }
+
 const headerAliases = {
     "Original Invoice No": "Invoice number",
     "Original Invoice": "Invoice number",
     "Dispatch Date/Cancellation Date": "Date",
     "Entity": "Return Type"
 };
+
 function compileCSV() {
 
     let masterHeader = [];
@@ -75,26 +77,23 @@ function compileCSV() {
         const rows = parsed.data;
         const selectedIndexes = fileObj.config.columns;
 
-        // Extract header names for selected columns
         const currentHeaders = selectedIndexes.map(i => {
 
-    let header = rows[0][i] || "";
+            let header = rows[0][i] || "";
 
-    if (headerAliases[header]) {
-        header = headerAliases[header];
-    }
+            if (headerAliases[header]) {
+                header = headerAliases[header];
+            }
 
-    return header;
-});
+            return header;
+        });
 
-        // Add new headers to masterHeader if not already present
         currentHeaders.forEach(header => {
             if (!masterHeader.includes(header)) {
                 masterHeader.push(header);
             }
         });
 
-        // Process data rows
         for (let r = 1; r < rows.length; r++) {
 
             let newRow = new Array(masterHeader.length).fill("");
@@ -114,30 +113,51 @@ function compileCSV() {
 
     });
 
-    // 🔥 Move Date column to first position
-const dateIndex = masterHeader.indexOf("Date");
+    // 🔥 Add Total Tax column if not present
+    if (!masterHeader.includes("Total Tax")) {
+        masterHeader.push("Total Tax");
+    }
 
-if (dateIndex > 0) {
-
-    const dateHeader = masterHeader.splice(dateIndex,1)[0];
-    masterHeader.unshift(dateHeader);
+    const igstIndex = masterHeader.indexOf("IGST");
+    const cgstIndex = masterHeader.indexOf("CGST");
+    const sgstIndex = masterHeader.indexOf("SGST");
+    const totalTaxIndex = masterHeader.indexOf("Total Tax");
 
     compiledRows = compiledRows.map(row => {
 
-        const dateValue = row.splice(dateIndex,1)[0];
-        row.unshift(dateValue);
+        let igst = parseFloat(row[igstIndex]) || 0;
+        let cgst = parseFloat(row[cgstIndex]) || 0;
+        let sgst = parseFloat(row[sgstIndex]) || 0;
+
+        row[totalTaxIndex] = (igst + cgst + sgst).toFixed(2);
 
         return row;
     });
-}
 
-// Convert to CSV
-const finalCSV =
-    masterHeader.join(',') + '\n' +
-    compiledRows.map(r => r.join(',')).join('\n');
+    // 🔥 Move Date column to first position
+    const dateIndex = masterHeader.indexOf("Date");
+
+    if (dateIndex > 0) {
+
+        const dateHeader = masterHeader.splice(dateIndex,1)[0];
+        masterHeader.unshift(dateHeader);
+
+        compiledRows = compiledRows.map(row => {
+
+            const dateValue = row.splice(dateIndex,1)[0];
+            row.unshift(dateValue);
+
+            return row;
+        });
+    }
+
+    const finalCSV =
+        masterHeader.join(',') + '\n' +
+        compiledRows.map(r => r.join(',')).join('\n');
 
     downloadCSV(finalCSV);
 }
+
 function downloadCSV(content) {
     const blob = new Blob([content], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
