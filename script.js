@@ -162,6 +162,26 @@ function compileCSV() {
         return row;
     });
 
+    // -------- ADD TOTAL MRP AFTER -1 MULTIPLICATION --------
+
+    if (!masterHeader.includes("Total MRP")) {
+        masterHeader.push("Total MRP");
+    }
+
+    const mrpIndex = masterHeader.indexOf("MRP");
+    const qtyIndex = masterHeader.indexOf("Qty");
+    const totalMRPIndex = masterHeader.indexOf("Total MRP");
+
+    compiledRows = compiledRows.map(row => {
+
+        let mrp = parseFloat(row[mrpIndex]) || 0;
+        let qty = parseFloat(row[qtyIndex]) || 0;
+
+        row[totalMRPIndex] = (mrp * qty).toFixed(2);
+
+        return row;
+    });
+
     // Move Date column to first position
     const dateIndex = masterHeader.indexOf("Date");
 
