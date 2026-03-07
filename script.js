@@ -8,7 +8,7 @@ const fileConfigs = [
     },
     {
         nameMatch: "Tally Return GST Report_",
-        columns: [0,1,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
+        columns: [0,1,4,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
     }
 ];
 
