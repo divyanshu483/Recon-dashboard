@@ -204,6 +204,7 @@ function compileCSV() {
         "Sale Order Number",
         "Invoice number",
         "Date",
+        "Customer Name",
         "Shipping Address State",
         "Product Name",
         "Product SKU Code",
