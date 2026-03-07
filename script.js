@@ -118,19 +118,10 @@ function compileCSV() {
         masterHeader.push("Total Tax");
     }
 
-    // Add Total MRP column
-    if (!masterHeader.includes("Total MRP")) {
-        masterHeader.push("Total MRP");
-    }
-
     const igstIndex = masterHeader.indexOf("IGST");
     const cgstIndex = masterHeader.indexOf("CGST");
     const sgstIndex = masterHeader.indexOf("SGST");
     const totalTaxIndex = masterHeader.indexOf("Total Tax");
-
-    const qtyIndex = masterHeader.indexOf("Qty");
-    const mrpIndex = masterHeader.indexOf("MRP");
-    const totalMRPIndex = masterHeader.indexOf("Total MRP");
 
     compiledRows = compiledRows.map(row => {
 
@@ -168,12 +159,6 @@ function compileCSV() {
 
         });
 
-        // Step 3: Calculate Total MRP AFTER -1
-        let qty = parseFloat(row[qtyIndex]) || 0;
-        let mrp = parseFloat(row[mrpIndex]) || 0;
-
-        row[totalMRPIndex] = (qty * mrp).toFixed(2);
-
         return row;
     });
 
@@ -193,6 +178,54 @@ function compileCSV() {
             return row;
         });
     }
+
+    // Rearrange columns
+    const desiredOrder = [
+        "Sale Order Number",
+        "Invoice number",
+        "Date",
+        "Shipping Address State",
+        "Product Name",
+        "Product SKU Code",
+        "MRP",
+        "Total MRP",
+        "Qty",
+        "Unit Price",
+        "Total Tax",
+        "Total",
+        "Product HSN Code",
+        "Sales Ledger",
+        "CGST",
+        "SGST",
+        "IGST",
+        "Billing Party Code",
+        "Channel Ledger",
+        "Return Type"
+    ];
+
+    let newHeader = [];
+    let indexMap = [];
+
+    desiredOrder.forEach(col => {
+        const idx = masterHeader.indexOf(col);
+        if (idx !== -1) {
+            newHeader.push(col);
+            indexMap.push(idx);
+        }
+    });
+
+    masterHeader.forEach((col, i) => {
+        if (!desiredOrder.includes(col)) {
+            newHeader.push(col);
+            indexMap.push(i);
+        }
+    });
+
+    masterHeader = newHeader;
+
+    compiledRows = compiledRows.map(row => {
+        return indexMap.map(i => row[i]);
+    });
 
     const finalCSV =
         masterHeader.join(',') + '\n' +
