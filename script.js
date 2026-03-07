@@ -17,7 +17,7 @@ document.getElementById('fileInput').addEventListener('change', handleFiles);
 function handleFiles(event) {
     const files = event.target.files;
     filesData = [];
-
+    
     let promises = [];
 
     Array.from(files).forEach(file => {
@@ -55,7 +55,10 @@ function handleFiles(event) {
         compileCSV();
     });
 }
-
+const headerAliases = {
+    "Invoice number": "Invoice Number",
+    "Original Invoice": "Invoice Number"
+};
 function compileCSV() {
 
     let masterHeader = [];
@@ -71,7 +74,16 @@ function compileCSV() {
         const selectedIndexes = fileObj.config.columns;
 
         // Extract header names for selected columns
-        const currentHeaders = selectedIndexes.map(i => rows[0][i] || "");
+        const currentHeaders = selectedIndexes.map(i => {
+
+    let header = rows[0][i] || "";
+
+    if (headerAliases[header]) {
+        header = headerAliases[header];
+    }
+
+    return header;
+});
 
         // Add new headers to masterHeader if not already present
         currentHeaders.forEach(header => {
