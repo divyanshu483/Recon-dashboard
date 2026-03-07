@@ -58,7 +58,8 @@ function handleFiles(event) {
 const headerAliases = {
     "Original Invoice No": "Invoice number",
     "Original Invoice": "Invoice number",
-    "Dispatch Date/Cancellation Date": "Date"
+    "Dispatch Date/Cancellation Date": "Date",
+    "Entity": "Return Type"
 };
 function compileCSV() {
 
