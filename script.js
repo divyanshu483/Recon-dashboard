@@ -56,7 +56,8 @@ function handleFiles(event) {
     });
 }
 const headerAliases = {
-    "Invoice Number": "Original Invoice No"
+    "Original Invoice No": "Invoice Number",
+    "Original Invoice": "Invoice Number"
 };
 function compileCSV() {
 
