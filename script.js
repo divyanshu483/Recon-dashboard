@@ -113,7 +113,7 @@ function compileCSV() {
 
     });
 
-    // 🔥 Add Total Tax column if not present
+    // Add Total Tax column
     if (!masterHeader.includes("Total Tax")) {
         masterHeader.push("Total Tax");
     }
@@ -129,12 +129,40 @@ function compileCSV() {
         let cgst = parseFloat(row[cgstIndex]) || 0;
         let sgst = parseFloat(row[sgstIndex]) || 0;
 
+        // Step 1: Calculate Total Tax
         row[totalTaxIndex] = (igst + cgst + sgst).toFixed(2);
+
+        // Step 2: Multiply selected columns by -1
+        const columnsToFlip = [
+            "Qty",
+            "Unit Price",
+            "Total Tax",
+            "Total",
+            "CGST",
+            "IGST",
+            "SGST"
+        ];
+
+        columnsToFlip.forEach(col => {
+
+            const idx = masterHeader.indexOf(col);
+
+            if (idx !== -1) {
+
+                let value = parseFloat(row[idx]);
+
+                if (!isNaN(value)) {
+                    row[idx] = (value * -1).toFixed(2);
+                }
+
+            }
+
+        });
 
         return row;
     });
 
-    // 🔥 Move Date column to first position
+    // Move Date column to first position
     const dateIndex = masterHeader.indexOf("Date");
 
     if (dateIndex > 0) {
