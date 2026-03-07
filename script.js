@@ -113,10 +113,27 @@ function compileCSV() {
 
     });
 
-    // Convert to CSV
-    const finalCSV =
-        masterHeader.join(',') + '\n' +
-        compiledRows.map(r => r.join(',')).join('\n');
+    // 🔥 Move Date column to first position
+const dateIndex = masterHeader.indexOf("Date");
+
+if (dateIndex > 0) {
+
+    const dateHeader = masterHeader.splice(dateIndex,1)[0];
+    masterHeader.unshift(dateHeader);
+
+    compiledRows = compiledRows.map(row => {
+
+        const dateValue = row.splice(dateIndex,1)[0];
+        row.unshift(dateValue);
+
+        return row;
+    });
+}
+
+// Convert to CSV
+const finalCSV =
+    masterHeader.join(',') + '\n' +
+    compiledRows.map(r => r.join(',')).join('\n');
 
     downloadCSV(finalCSV);
 }
