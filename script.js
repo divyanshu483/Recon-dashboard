@@ -118,10 +118,19 @@ function compileCSV() {
         masterHeader.push("Total Tax");
     }
 
+    // Add Total MRP column
+    if (!masterHeader.includes("Total MRP")) {
+        masterHeader.push("Total MRP");
+    }
+
     const igstIndex = masterHeader.indexOf("IGST");
     const cgstIndex = masterHeader.indexOf("CGST");
     const sgstIndex = masterHeader.indexOf("SGST");
     const totalTaxIndex = masterHeader.indexOf("Total Tax");
+
+    const qtyIndex = masterHeader.indexOf("Qty");
+    const mrpIndex = masterHeader.indexOf("MRP");
+    const totalMRPIndex = masterHeader.indexOf("Total MRP");
 
     compiledRows = compiledRows.map(row => {
 
@@ -158,6 +167,12 @@ function compileCSV() {
             }
 
         });
+
+        // Step 3: Calculate Total MRP AFTER -1
+        let qty = parseFloat(row[qtyIndex]) || 0;
+        let mrp = parseFloat(row[mrpIndex]) || 0;
+
+        row[totalMRPIndex] = (qty * mrp).toFixed(2);
 
         return row;
     });
