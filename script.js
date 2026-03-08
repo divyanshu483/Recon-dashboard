@@ -157,9 +157,11 @@ function compileCSV() {
 
                 const sku = (newRow[skuIndex] || "").toString().trim().toUpperCase();
 
-                if ((!newRow[mrpIndex] || newRow[mrpIndex] === "") && mrpMap[sku]) {
-                    newRow[mrpIndex] = mrpMap[sku];
-                }
+                let currentMRP = parseFloat(newRow[mrpIndex]);
+
+if ((!currentMRP || currentMRP === 0) && mrpMap[sku]) {
+    newRow[mrpIndex] = mrpMap[sku];
+}
             }
 
             compiledRows.push(newRow);
