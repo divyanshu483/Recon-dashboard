@@ -13,7 +13,7 @@ const fileConfigs = [
     },
     {
         nameMatch: "Item Master_",
-        columns: [0,1] // SKU, MRP
+        columns: [1,25] // SKU, MRP
     }
 ];
 
@@ -65,7 +65,8 @@ const headerAliases = {
     "Original Invoice No": "Invoice number",
     "Original Invoice": "Invoice number",
     "Dispatch Date/Cancellation Date": "Date",
-    "Entity": "Return Type"
+    "Entity": "Return Type",
+    "Product Code": "Product SKU Code"
 };
 
 function compileCSV() {
