@@ -1,4 +1,5 @@
 let filesData = [];
+let mrpMap = {}; // SKU → MRP map
 
 // Configuration for different file types
 const fileConfigs = [
@@ -9,6 +10,10 @@ const fileConfigs = [
     {
         nameMatch: "Tally Return GST Report_",
         columns: [0,1,4,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
+    },
+    {
+        nameMatch: "Item Master_",
+        columns: [0,1] // SKU, MRP
     }
 ];
 
@@ -67,6 +72,7 @@ function compileCSV() {
 
     let masterHeader = [];
     let compiledRows = [];
+    mrpMap = {};
 
     filesData.forEach(fileObj => {
 
@@ -75,6 +81,23 @@ function compileCSV() {
         });
 
         const rows = parsed.data;
+
+        // BUILD MRP MAP FROM ITEM MASTER
+        if (fileObj.config.nameMatch.includes("Item Master")) {
+
+            for (let r = 1; r < rows.length; r++) {
+
+                const sku = rows[r][0];
+                const mrp = rows[r][1];
+
+                if (sku) {
+                    mrpMap[sku] = mrp;
+                }
+            }
+
+            return;
+        }
+
         const selectedIndexes = fileObj.config.columns;
 
         const currentHeaders = selectedIndexes.map(i => {
@@ -108,6 +131,19 @@ function compileCSV() {
                 }
             });
 
+            // APPLY MRP FROM ITEM MASTER USING SKU
+            const skuIndex = masterHeader.indexOf("Product SKU Code");
+            const mrpIndex = masterHeader.indexOf("MRP");
+
+            if (skuIndex !== -1 && mrpIndex !== -1) {
+
+                const sku = newRow[skuIndex];
+
+                if ((!newRow[mrpIndex] || newRow[mrpIndex] === "") && mrpMap[sku]) {
+                    newRow[mrpIndex] = mrpMap[sku];
+                }
+            }
+
             compiledRows.push(newRow);
         }
 
@@ -129,10 +165,8 @@ function compileCSV() {
         let cgst = parseFloat(row[cgstIndex]) || 0;
         let sgst = parseFloat(row[sgstIndex]) || 0;
 
-        // Step 1: Calculate Total Tax
         row[totalTaxIndex] = (igst + cgst + sgst).toFixed(2);
 
-        // Step 2: Multiply selected columns by -1
         const columnsToFlip = [
             "Qty",
             "Unit Price",
@@ -162,8 +196,7 @@ function compileCSV() {
         return row;
     });
 
-    // -------- ADD TOTAL MRP AFTER -1 MULTIPLICATION --------
-
+    // ADD TOTAL MRP AFTER -1 MULTIPLICATION
     if (!masterHeader.includes("Total MRP")) {
         masterHeader.push("Total MRP");
     }
