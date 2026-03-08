@@ -68,15 +68,24 @@ const headerAliases = {
     "Entity": "Return Type",
     "Product Code": "Product SKU Code"
 };
-function normalizeSKU(sku) {
+function normalizeSKU(value) {
 
-    if (!sku) return "";
+    if (!value) return "";
 
-    let s = String(sku).trim();
+    let s = String(value).trim();
 
-    // convert scientific notation to normal number string
+    // Handle scientific notation safely
     if (/e/i.test(s)) {
-        s = Number(s).toFixed(0);
+
+        let parts = s.toLowerCase().split("e+");
+        let base = parts[0].replace(".", "");
+        let exponent = parseInt(parts[1], 10);
+
+        let decimalDigits = (parts[0].split(".")[1] || "").length;
+
+        let zerosNeeded = exponent - (base.length - 1);
+
+        s = base + "0".repeat(Math.max(0, zerosNeeded));
     }
 
     return s.replace(/\s+/g,'').toUpperCase();
