@@ -91,29 +91,15 @@ if (fileObj.config.nameMatch.includes("Item Master")) {
     const skuCol = selectedIndexes[0];
     const mrpCol = selectedIndexes[1];
 
-    for (let r = 1; r < rows.length; r++) {
-
-        const sku = rows[r][skuCol];
-        const mrp = rows[r][mrpCol];
-
-        if (sku && mrp) {
-            mrpMap[String(sku).trim()] = mrp;
-        }
-
-    }
-
-    return; // Do not add Item Master rows to compiledRows
-}
-
             for (let r = 1; r < rows.length; r++) {
 
-                const sku = rows[r][0];
-                const mrp = rows[r][1];
+    const sku = rows[r][skuCol];
+    const mrp = rows[r][mrpCol];
 
-                if (sku) {
-                    mrpMap[sku] = mrp;
-                }
-            }
+    if (sku && mrp) {
+        mrpMap[String(sku).trim().toUpperCase()] = mrp;
+    }
+}
 
             return;
         }
@@ -157,8 +143,8 @@ if (fileObj.config.nameMatch.includes("Item Master")) {
 
             if (skuIndex !== -1 && mrpIndex !== -1) {
 
-                const sku = String(newRow[skuIndex]).trim();
-
+                const sku = String(newRow[skuIndex]).trim().toUpperCase();
+                
                 if ((!newRow[mrpIndex] || newRow[mrpIndex] === "") && mrpMap[sku]) {
                     newRow[mrpIndex] = mrpMap[sku];
                 }
