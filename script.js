@@ -84,7 +84,26 @@ function compileCSV() {
         const rows = parsed.data;
 
         // BUILD MRP MAP FROM ITEM MASTER
-        if (fileObj.config.nameMatch.includes("Item Master")) {
+if (fileObj.config.nameMatch.includes("Item Master")) {
+
+    const selectedIndexes = fileObj.config.columns;
+
+    const skuCol = selectedIndexes[0];
+    const mrpCol = selectedIndexes[1];
+
+    for (let r = 1; r < rows.length; r++) {
+
+        const sku = rows[r][skuCol];
+        const mrp = rows[r][mrpCol];
+
+        if (sku && mrp) {
+            mrpMap[String(sku).trim()] = mrp;
+        }
+
+    }
+
+    return; // Do not add Item Master rows to compiledRows
+}
 
             for (let r = 1; r < rows.length; r++) {
 
@@ -138,7 +157,7 @@ function compileCSV() {
 
             if (skuIndex !== -1 && mrpIndex !== -1) {
 
-                const sku = newRow[skuIndex];
+                const sku = String(newRow[skuIndex]).trim();
 
                 if ((!newRow[mrpIndex] || newRow[mrpIndex] === "") && mrpMap[sku]) {
                     newRow[mrpIndex] = mrpMap[sku];
