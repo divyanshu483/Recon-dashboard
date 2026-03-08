@@ -75,7 +75,10 @@ function compileCSV() {
     let compiledRows = [];
     mrpMap = {};
 
+    // PASS 1 — BUILD MRP MAP FROM ITEM MASTER
     filesData.forEach(fileObj => {
+
+        if (!fileObj.config.nameMatch.includes("Item Master")) return;
 
         const parsed = Papa.parse(fileObj.content, {
             skipEmptyLines: true
@@ -83,26 +86,33 @@ function compileCSV() {
 
         const rows = parsed.data;
 
-        // BUILD MRP MAP FROM ITEM MASTER
-if (fileObj.config.nameMatch.includes("Item Master")) {
+        const selectedIndexes = fileObj.config.columns;
+        const skuCol = selectedIndexes[0];
+        const mrpCol = selectedIndexes[1];
 
-    const selectedIndexes = fileObj.config.columns;
+        for (let r = 1; r < rows.length; r++) {
 
-    const skuCol = selectedIndexes[0];
-    const mrpCol = selectedIndexes[1];
+            const sku = rows[r][skuCol];
+            const mrp = rows[r][mrpCol];
 
-            for (let r = 1; r < rows.length; r++) {
-
-    const sku = rows[r][skuCol];
-    const mrp = rows[r][mrpCol];
-
-    if (sku && mrp) {
-        mrpMap[String(sku).trim().toUpperCase()] = mrp;
-    }
-}
-
-            return;
+            if (sku && mrp) {
+                mrpMap[String(sku).trim().toUpperCase()] = mrp;
+            }
         }
+
+    });
+
+
+    // PASS 2 — PROCESS OTHER FILES
+    filesData.forEach(fileObj => {
+
+        if (fileObj.config.nameMatch.includes("Item Master")) return;
+
+        const parsed = Papa.parse(fileObj.content, {
+            skipEmptyLines: true
+        });
+
+        const rows = parsed.data;
 
         const selectedIndexes = fileObj.config.columns;
 
@@ -118,11 +128,13 @@ if (fileObj.config.nameMatch.includes("Item Master")) {
         });
 
         currentHeaders.forEach(header => {
-            if (!masterHeader.includes(header)) {
-                masterHeader.push(header);
-            }
-        });
+    if (!masterHeader.includes(header)) {
+        masterHeader.push(header);
 
+        // expand previous rows so column alignment stays correct
+        compiledRows.forEach(r => r.push(""));
+    }
+});
         for (let r = 1; r < rows.length; r++) {
 
             let newRow = new Array(masterHeader.length).fill("");
@@ -143,8 +155,8 @@ if (fileObj.config.nameMatch.includes("Item Master")) {
 
             if (skuIndex !== -1 && mrpIndex !== -1) {
 
-                const sku = String(newRow[skuIndex]).trim().toUpperCase();
-                
+                const sku = (newRow[skuIndex] || "").toString().trim().toUpperCase();
+
                 if ((!newRow[mrpIndex] || newRow[mrpIndex] === "") && mrpMap[sku]) {
                     newRow[mrpIndex] = mrpMap[sku];
                 }
@@ -293,7 +305,6 @@ if (fileObj.config.nameMatch.includes("Item Master")) {
 
     downloadCSV(finalCSV);
 }
-
 function downloadCSV(content) {
     const blob = new Blob([content], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
