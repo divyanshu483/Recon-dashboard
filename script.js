@@ -68,7 +68,19 @@ const headerAliases = {
     "Entity": "Return Type",
     "Product Code": "Product SKU Code"
 };
+function normalizeSKU(sku) {
 
+    if (!sku) return "";
+
+    let s = String(sku).trim();
+
+    // convert scientific notation to normal number string
+    if (/e/i.test(s)) {
+        s = Number(s).toFixed(0);
+    }
+
+    return s.replace(/\s+/g,'').toUpperCase();
+}
 function compileCSV() {
 
     let masterHeader = [];
@@ -81,7 +93,8 @@ function compileCSV() {
         if (!fileObj.config.nameMatch.includes("Item Master")) return;
 
         const parsed = Papa.parse(fileObj.content, {
-            skipEmptyLines: true
+            skipEmptyLines: true,
+            dynamicTyping: false
         });
 
         const rows = parsed.data;
@@ -96,7 +109,7 @@ function compileCSV() {
             const mrp = rows[r][mrpCol];
 
             if (sku && mrp) {
-                mrpMap[String(sku).trim().toUpperCase()] = mrp;
+                mrpMap[normalizeSKU(sku)] = mrp;
             }
         }
 
@@ -155,7 +168,7 @@ function compileCSV() {
 
             if (skuIndex !== -1 && mrpIndex !== -1) {
 
-                const sku = (newRow[skuIndex] || "").toString().trim().toUpperCase();
+                const sku = normalizeSKU(newRow[skuIndex]);
 
                 let currentMRP = parseFloat(newRow[mrpIndex]);
 
