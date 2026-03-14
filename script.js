@@ -20,45 +20,45 @@ columns: [1,25] // SKU, MRP
 
 document.getElementById('fileInput').addEventListener('change', handleFiles);
 
-function handleFiles(event) {
+function handleFiles(event){
 
 const files = event.target.files;
 filesData = [];
 
 let promises = [];
 
-Array.from(files).forEach(file => {
+Array.from(files).forEach(file=>{
 
 const config = fileConfigs.find(cfg =>
 file.name.toLowerCase().includes(cfg.nameMatch.toLowerCase())
 );
 
-if (config) {
+if(config){
 
 const reader = new FileReader();
 
-const promise = new Promise(resolve => {
+const promise = new Promise(resolve=>{
 reader.onload = e => resolve({
-content: e.target.result,
-config: config
+content:e.target.result,
+config:config
 });
 });
 
 reader.readAsText(file);
 promises.push(promise);
 
-} else {
-console.log("Ignored file:", file.name);
+}else{
+console.log("Ignored file:",file.name);
 }
 
 });
 
-if (promises.length === 0) {
+if(promises.length===0){
 alert("No matching files found.");
 return;
 }
 
-Promise.all(promises).then(results => {
+Promise.all(promises).then(results=>{
 filesData = results;
 compileCSV();
 });
@@ -66,34 +66,27 @@ compileCSV();
 }
 
 const headerAliases = {
-"Original Invoice No": "Invoice number",
-"Original Invoice": "Invoice number",
-"Dispatch Date/Cancellation Date": "Date",
-"Entity": "Return Type",
-"Product Code": "Product SKU Code"
+"Original Invoice No":"Invoice number",
+"Original Invoice":"Invoice number",
+"Dispatch Date/Cancellation Date":"Date",
+"Entity":"Return Type",
+"Product Code":"Product SKU Code"
 };
 
-// STRONGER SKU NORMALIZATION
 function normalizeSKU(value){
 
 if(!value) return "";
 
 let s = String(value);
 
-// remove quotes
 s = s.replace(/"/g,'');
-
-// remove spaces, tabs, line breaks
 s = s.replace(/\s+/g,'');
 
-// handle scientific notation
 if(/e/i.test(s)){
-
 let num = Number(s);
 if(!isNaN(num)){
 s = num.toString();
 }
-
 }
 
 return s.toUpperCase();
@@ -106,10 +99,11 @@ let compiledRows = [];
 mrpMap = {};
 missingSKUs = [];
 
-// PASS 1 — BUILD MRP MAP FROM ITEM MASTER
-filesData.forEach(fileObj => {
+/* PASS 1 — BUILD MRP MAP FROM ITEM MASTER */
 
-if (!fileObj.config.nameMatch.includes("Item Master")) return;
+filesData.forEach(fileObj=>{
+
+if(!fileObj.config.nameMatch.includes("Item Master")) return;
 
 const parsed = Papa.parse(fileObj.content,{
 skipEmptyLines:true,
@@ -139,10 +133,11 @@ mrpMap[cleanSKU] = mrp;
 
 console.log("MRP MAP:",mrpMap);
 
-// PASS 2 — PROCESS OTHER FILES
-filesData.forEach(fileObj => {
+/* PASS 2 — PROCESS OTHER FILES */
 
-if (fileObj.config.nameMatch.includes("Item Master")) return;
+filesData.forEach(fileObj=>{
+
+if(fileObj.config.nameMatch.includes("Item Master")) return;
 
 const parsed = Papa.parse(fileObj.content,{
 skipEmptyLines:true
@@ -152,7 +147,7 @@ const rows = parsed.data;
 
 const selectedIndexes = fileObj.config.columns;
 
-const currentHeaders = selectedIndexes.map(i => {
+const currentHeaders = selectedIndexes.map(i=>{
 
 let header = rows[0][i] || "";
 
@@ -164,15 +159,18 @@ return header;
 
 });
 
-currentHeaders.forEach(header => {
+/* ⭐ FORCE CREATE MRP COLUMN */
+
+if(!masterHeader.includes("MRP")){
+masterHeader.push("MRP");
+compiledRows.forEach(r=>r.push(""));
+}
+
+currentHeaders.forEach(header=>{
 
 if(!masterHeader.includes(header)){
-
 masterHeader.push(header);
-
-// expand previous rows
-compiledRows.forEach(r => r.push(""));
-
+compiledRows.forEach(r=>r.push(""));
 }
 
 });
@@ -186,34 +184,25 @@ selectedIndexes.forEach((colIndex,idx)=>{
 const headerName = currentHeaders[idx];
 const masterIndex = masterHeader.indexOf(headerName);
 
-if(masterIndex !== -1){
+if(masterIndex!==-1){
 newRow[masterIndex] = rows[r][colIndex] || "";
 }
 
 });
 
-// APPLY MRP FROM ITEM MASTER USING SKU
+/* APPLY MRP FROM ITEM MASTER */
+
 const skuIndex = masterHeader.indexOf("Product SKU Code");
 const mrpIndex = masterHeader.indexOf("MRP");
 
-if(skuIndex !== -1 && mrpIndex !== -1){
+if(skuIndex !== -1){
 
 const sku = normalizeSKU(newRow[skuIndex]);
 
-let currentMRP = parseFloat(newRow[mrpIndex]);
-
-if((!currentMRP || currentMRP===0)){
-
 if(mrpMap[sku]){
-
 newRow[mrpIndex] = mrpMap[sku];
-
 }else{
-
 missingSKUs.push(sku);
-
-}
-
 }
 
 }
@@ -224,7 +213,8 @@ compiledRows.push(newRow);
 
 });
 
-// Add Total Tax column
+/* ADD TOTAL TAX */
+
 if(!masterHeader.includes("Total Tax")){
 masterHeader.push("Total Tax");
 }
@@ -242,37 +232,12 @@ let sgst = parseFloat(row[sgstIndex])||0;
 
 row[totalTaxIndex] = (igst+cgst+sgst).toFixed(2);
 
-const columnsToFlip = [
-"Qty",
-"Unit Price",
-"Total Tax",
-"Total",
-"CGST",
-"IGST",
-"SGST"
-];
-
-columnsToFlip.forEach(col=>{
-
-const idx = masterHeader.indexOf(col);
-
-if(idx!==-1){
-
-let value = parseFloat(row[idx]);
-
-if(!isNaN(value)){
-row[idx] = (value*-1).toFixed(2);
-}
-
-}
-
-});
-
 return row;
 
 });
 
-// ADD TOTAL MRP
+/* TOTAL MRP */
+
 if(!masterHeader.includes("Total MRP")){
 masterHeader.push("Total MRP");
 }
@@ -292,78 +257,7 @@ return row;
 
 });
 
-// Move Date column first
-const dateIndex = masterHeader.indexOf("Date");
-
-if(dateIndex>0){
-
-const dateHeader = masterHeader.splice(dateIndex,1)[0];
-masterHeader.unshift(dateHeader);
-
-compiledRows = compiledRows.map(row=>{
-
-const dateValue = row.splice(dateIndex,1)[0];
-row.unshift(dateValue);
-
-return row;
-
-});
-
-}
-
-// Rearrange columns
-const desiredOrder = [
-"Sale Order Number",
-"Invoice number",
-"Date",
-"Customer Name",
-"Shipping Address State",
-"Product Name",
-"Product SKU Code",
-"MRP",
-"Total MRP",
-"Qty",
-"Unit Price",
-"Total Tax",
-"Total",
-"Product HSN Code",
-"Sales Ledger",
-"CGST",
-"SGST",
-"IGST",
-"Billing Party Code",
-"Channel Ledger",
-"Return Type"
-];
-
-let newHeader = [];
-let indexMap = [];
-
-desiredOrder.forEach(col=>{
-
-const idx = masterHeader.indexOf(col);
-
-if(idx!==-1){
-newHeader.push(col);
-indexMap.push(idx);
-}
-
-});
-
-masterHeader.forEach((col,i)=>{
-
-if(!desiredOrder.includes(col)){
-newHeader.push(col);
-indexMap.push(i);
-}
-
-});
-
-masterHeader = newHeader;
-
-compiledRows = compiledRows.map(row=>{
-return indexMap.map(i=>row[i]);
-});
+/* FINAL CSV */
 
 const finalCSV =
 masterHeader.join(',')+'\n'+
