@@ -256,7 +256,6 @@ if(!masterHeader.includes("Unit Price")){
 }
 
 const totalIndex = masterHeader.indexOf("Total");
-const totalTaxIndex = masterHeader.indexOf("Total Tax");
 const unitPriceIndex = masterHeader.indexOf("Unit Price");
 
 compiledRows = compiledRows.map(row=>{
