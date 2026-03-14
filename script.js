@@ -79,6 +79,7 @@ const headerAliases = {
 "Channel Name":"Channel Ledger",
 "SKU Code":"Product SKU Code",
 "Quantity":"Qty",
+"Invoice Total":"Total",
 "HSN Code":"Product HSN Code",
 "GST Tax Type Code":"Sales Ledger",
 "SKU Name":"Product Name",
