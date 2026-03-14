@@ -4,20 +4,23 @@ let missingSKUs = [];
 
 // Configuration for different file types
 const fileConfigs = [
-{
-nameMatch: "Converse Tally Cancel GST Report_",
-columns: [1,2,4,5,6,7,8,11,12,17,24,25,27,29,45,47,56,61]
-},
-{
-nameMatch: "Tally Return GST Report_",
-columns: [0,1,4,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
-},
-{
-nameMatch: "Item Master_",
-columns: [1,25] // SKU, MRP
-}
+    {
+        nameMatch: "Converse Tally Cancel GST Report_",
+        columns: [1,2,4,5,6,7,8,11,12,17,24,25,27,29,45,47,56,61]
+    },
+    {
+        nameMatch: "Tally Return GST Report_",
+        columns: [0,1,4,5,6,7,8,11,12,17,24,25,27,29,51,56,62,63,64]
+    },
+    {
+        nameMatch: "Item Master_",
+        columns: [1,25]
+    },
+    {
+        nameMatch: "Invoice_",
+        columns: [0,1,4,9,10,11,12,13,14,16,17,19,20,21,37,42]
+    }
 ];
-
 document.getElementById('fileInput').addEventListener('change', handleFiles);
 
 function handleFiles(event){
