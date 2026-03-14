@@ -73,7 +73,13 @@ const headerAliases = {
 "Original Invoice":"Invoice number",
 "Dispatch Date/Cancellation Date":"Date",
 "Entity":"Return Type",
-"Product Code":"Product SKU Code"
+"Product Code":"Product SKU Code",
+"Order No":"Sale Order Number",
+"Invoice No":"Invoice number",
+"Channel Name":"Channel Ledger",
+"SKU Code":"Product SKU Code",
+"Quantity":"Qty",
+"Invoice Created Date":"Date"
 };
 
 function normalizeSKU(value){
