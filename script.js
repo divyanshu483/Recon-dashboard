@@ -42,43 +42,7 @@ function handleFiles(event) {
                 });
             });
 
-            const reader = new FileReader();
-
-const promise = new Promise(resolve => {
-
-    reader.onload = e => {
-
-        if(file.name.endsWith(".xlsx")){
-
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type:"array"});
-
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const csv = XLSX.utils.sheet_to_csv(sheet);
-
-            resolve({
-                content: csv,
-                config: config
-            });
-
-        } else {
-
-            resolve({
-                content: e.target.result,
-                config: config
-            });
-
-        }
-
-    };
-
-});
-
-if(file.name.endsWith(".xlsx")){
-    reader.readAsArrayBuffer(file);
-}else{
-    reader.readAsText(file);
-}
+            reader.readAsText(file);
             promises.push(promise);
 
         } else {
