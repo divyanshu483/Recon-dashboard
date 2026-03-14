@@ -6,7 +6,7 @@ let missingSKUs = [];
 const fileConfigs = [
     {
         nameMatch: "Converse Tally Cancel GST Report_",
-        columns: [1,2,4,5,6,7,8,11,12,17,24,25,27,29,45,47,56,61]
+        columns: [1,2,4,5,6,7,11,12,17,24,25,27,29,45,47,56,61]
     },
     {
         nameMatch: "Tally Return GST Report_",
@@ -249,7 +249,26 @@ row[totalTaxIndex] = (igst+cgst+sgst).toFixed(2);
 return row;
 
 });
+/* ADD UNIT PRICE COLUMN */
 
+if(!masterHeader.includes("Unit Price")){
+    masterHeader.push("Unit Price");
+}
+
+const totalIndex = masterHeader.indexOf("Total");
+const totalTaxIndex = masterHeader.indexOf("Total Tax");
+const unitPriceIndex = masterHeader.indexOf("Unit Price");
+
+compiledRows = compiledRows.map(row=>{
+
+    let total = parseFloat(row[totalIndex]) || 0;
+    let totalTax = parseFloat(row[totalTaxIndex]) || 0;
+
+    row[unitPriceIndex] = (total - totalTax).toFixed(2);
+
+    return row;
+
+});
 /* TOTAL MRP */
 
 if(!masterHeader.includes("Total MRP")){
